@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Campagnes Emailing — Marvel Pharma | MBC Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fredoka+One&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<style>
+/* =========================================================
+   DASHBOARD PREMIUM — MBC SOLUTIONS
+   Données conservées à l'identique.
+   Palette officielle uniquement :
+   Bleu #38b6ff · Turquoise #5ce1e6 · Doré #ffbd59
+   Orange #fe9452 · Violet #8c52ff · Gris foncé #4d4d4d
+   Typographies :
+   Titrage Alfa Slab One · Sous-titrage Fredoka One · Texte Open Sans
+   ========================================================= */
+
+:root{
+  --blue:#38b6ff;
+  --turquoise:#5ce1e6;
+  --gold:#ffbd59;
+  --orange:#fe9452;
+  --purple:#8c52ff;
+  --dark:#4d4d4d;
+  --white:#ffffff;
+
+  --blue-soft:rgba(56,182,255,.12);
+  --turquoise-soft:rgba(92,225,230,.16);
+  --gold-soft:rgba(255,189,89,.18);
+  --orange-soft:rgba(254,148,82,.16);
+  --purple-soft:rgba(140,82,255,.14);
+  --dark-soft:rgba(77,77,77,.08);
+
+  --border:rgba(77,77,77,.16);
+  --shadow:0 18px 48px rgba(77,77,77,.10);
+  --shadow-soft:0 10px 28px rgba(77,77,77,.08);
+}
+
+/* RESET */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:17px;scroll-behavior:smooth}
+body{
+  font-family:'Open Sans',sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(56,182,255,.16), transparent 30%),
+    radial-gradient(circle at top right, rgba(140,82,255,.12), transparent 26%),
+    var(--white);
+  color:var(--dark);
+  line-height:1.75;
+  font-size:1rem;
+}
+img,canvas{max-width:100%;display:block}
+
+/* GLOBAL LAYOUT */
+.db{
+  width:min(1440px,100%);
+  margin:0 auto;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+
+/* HERO / TOPBAR */
+.topbar{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--turquoise) 58%,var(--gold) 130%);
+  color:var(--white);
+  border-radius:34px;
+  padding:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:24px;
+  box-shadow:var(--shadow);
+}
+.topbar::before{
+  content:"";
+  position:absolute;
+  width:380px;
+  height:380px;
+  right:-140px;
+  top:-170px;
+  border-radius:50%;
+  background:rgba(255,255,255,.24);
+}
+.topbar::after{
+  content:"";
+  position:absolute;
+  width:210px;
+  height:210px;
+  right:160px;
+  bottom:-120px;
+  border-radius:50%;
+  background:rgba(140,82,255,.20);
+}
+.top-l,.bgs{position:relative;z-index:1}
+.top-l{display:flex;align-items:center;gap:22px}
+.logo{
+  width:72px;height:72px;
+  border-radius:24px;
+  background:rgba(255,255,255,.24);
+  border:2px solid rgba(255,255,255,.52);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);
+  font-size:30px;
+  box-shadow:0 12px 30px rgba(77,77,77,.12);
+}
+.logo i{color:var(--white)!important;font-size:30px!important}
+.top-h{
+  font-family:'Alfa Slab One',serif;
+  font-size:clamp(1.55rem,3vw,2.75rem);
+  letter-spacing:.02em;
+  line-height:1.15;
+  color:var(--white);
+  max-width:860px;
+}
+.top-s{
+  margin-top:10px;
+  font-size:clamp(.98rem,1.5vw,1.15rem);
+  color:var(--white);
+  font-weight:600;
+  max-width:920px;
+}
+.bgs{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.bg{
+  background:rgba(255,255,255,.25);
+  color:var(--white);
+  border:1.5px solid rgba(255,255,255,.55);
+  border-radius:999px;
+  padding:9px 16px;
+  font-size:.95rem;
+  font-weight:800;
+  backdrop-filter:blur(8px);
+}
+
+/* TABS */
+.tabs{
+  position:sticky;
+  top:10px;
+  z-index:20;
+  background:rgba(255,255,255,.93);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:10px;
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  box-shadow:var(--shadow-soft);
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  font-family:'Fredoka One',cursive;
+  border:0;
+  background:transparent;
+  color:var(--dark);
+  padding:13px 20px;
+  border-radius:18px;
+  cursor:pointer;
+  white-space:nowrap;
+  font-size:1rem;
+  transition:all .22s ease;
+}
+.tab:hover{
+  background:var(--blue-soft);
+  color:var(--dark);
+  transform:translateY(-1px);
+}
+.tab.on{
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:var(--white);
+  box-shadow:0 12px 28px rgba(56,182,255,.25);
+}
+
+/* SECTIONS */
+.sec{display:flex;flex-direction:column;gap:28px}
+.hid{display:none!important}
+
+/* CARDS */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:30px;
+  box-shadow:var(--shadow-soft);
+}
+.ct{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.35rem,2vw,1.85rem);
+  color:var(--dark);
+  margin-bottom:8px;
+}
+.ct::after{
+  content:"";
+  display:block;
+  width:82px;
+  height:6px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--blue),var(--turquoise),var(--gold));
+  margin-top:10px;
+}
+.cs{
+  font-size:1.03rem;
+  color:var(--dark);
+  opacity:.90;
+  margin:18px 0 24px;
+  line-height:1.85;
+}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+
+/* KPI CARDS */
+.met{
+  position:relative;
+  overflow:hidden;
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:28px;
+  padding:24px;
+  box-shadow:0 10px 26px rgba(77,77,77,.07);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.met::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;right:0;height:7px;
+  background:linear-gradient(90deg,var(--blue),var(--turquoise),var(--gold),var(--purple));
+}
+.met::after{
+  content:"";
+  position:absolute;
+  right:-42px;bottom:-42px;
+  width:110px;height:110px;border-radius:50%;
+  background:var(--blue-soft);
+}
+.met:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow);
+  border-color:var(--blue);
+}
+.ml{
+  position:relative;z-index:1;
+  font-size:.92rem;
+  color:var(--dark);
+  opacity:.78;
+  margin-bottom:10px;
+  line-height:1.4;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.mv{
+  position:relative;z-index:1;
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.85rem,3vw,2.65rem);
+  line-height:1.05;
+  color:var(--dark);
+}
+.ms{
+  position:relative;z-index:1;
+  font-size:.98rem;
+  color:var(--dark);
+  opacity:.80;
+  margin-top:10px;
+  line-height:1.55;
+}
+
+/* SEMANTIC COLORS */
+.vt{color:var(--blue)!important}
+.vr{color:var(--orange)!important}
+.vb{color:var(--turquoise)!important}
+.va{color:var(--gold)!important}
+.vp{color:var(--purple)!important}
+
+/* HIGHLIGHT STORY BLOCK */
+.hl{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--purple) 0%,var(--blue) 58%,var(--turquoise) 115%);
+  color:var(--white);
+  border-radius:34px;
+  padding:34px;
+  box-shadow:var(--shadow);
+}
+.hl::after{
+  content:"";
+  position:absolute;
+  right:-90px;top:-90px;
+  width:270px;height:270px;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+}
+.hlt{
+  position:relative;z-index:1;
+  font-family:'Alfa Slab One',serif;
+  font-size:clamp(1.35rem,2.4vw,2.1rem);
+  margin-bottom:20px;
+  color:var(--white);
+}
+.hlg{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.hlc{
+  background:rgba(255,255,255,.18);
+  border:1.5px solid rgba(255,255,255,.45);
+  border-radius:26px;
+  padding:22px;
+  backdrop-filter:blur(6px);
+}
+.hll,.hls,.hln{color:var(--white)!important}
+.hll{
+  font-size:1rem;
+  font-weight:800;
+  margin-bottom:10px;
+  line-height:1.45;
+}
+.hlv{
+  font-family:'Fredoka One',cursive;
+  color:var(--gold)!important;
+  font-size:clamp(2.2rem,4vw,3.4rem);
+  line-height:1;
+}
+.hls{
+  font-size:1rem;
+  margin-top:10px;
+  line-height:1.65;
+}
+.hln{
+  position:relative;z-index:1;
+  font-size:1.05rem;
+  margin-top:22px;
+  padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.35);
+  line-height:1.85;
+}
+
+/* SWOT */
+.swot-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.sb{
+  border-radius:28px;
+  padding:24px;
+  border:2px solid;
+  box-shadow:0 10px 26px rgba(77,77,77,.06);
+}
+.sb:nth-child(1){background:var(--blue-soft);border-color:var(--blue)}
+.sb:nth-child(2){background:var(--orange-soft);border-color:var(--orange)}
+.sb:nth-child(3){background:var(--turquoise-soft);border-color:var(--turquoise)}
+.sb:nth-child(4){background:var(--gold-soft);border-color:var(--gold)}
+.st{
+  font-family:'Fredoka One',cursive;
+  font-size:1.35rem;
+  color:var(--dark)!important;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.si{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  color:var(--dark)!important;
+  font-size:1rem!important;
+  line-height:1.7;
+}
+.si:last-child{border-bottom:0;padding-bottom:0}
+.si div:last-child{color:var(--dark)!important;font-size:1rem!important}
+.dot{
+  width:11px;height:11px;
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:8px;
+  background:var(--blue);
+}
+
+/* INSIGHT BOXES */
+.ins{
+  border-radius:24px;
+  padding:22px 24px;
+  margin-bottom:16px;
+  border:1.5px solid;
+  border-left-width:8px;
+  box-shadow:0 8px 20px rgba(77,77,77,.05);
+}
+.ins:last-child{margin-bottom:0}
+.ig{background:var(--blue-soft);border-color:var(--blue)}
+.ir{background:var(--orange-soft);border-color:var(--orange)}
+.ib{background:var(--turquoise-soft);border-color:var(--turquoise)}
+.ia{background:var(--gold-soft);border-color:var(--gold)}
+.ip{background:var(--purple-soft);border-color:var(--purple)}
+.it{
+  font-family:'Fredoka One',cursive;
+  font-size:1.18rem;
+  color:var(--dark);
+  margin-bottom:9px;
+}
+.ib2{
+  font-size:1.03rem;
+  line-height:1.85;
+  color:var(--dark);
+}
+
+/* TABLES */
+.tbl-wrap{
+  overflow-x:auto;
+  border-radius:24px;
+  border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(77,77,77,.05);
+}
+.tbl{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+  font-size:.98rem;
+  background:var(--white);
+}
+.tbl th{
+  position:sticky;top:0;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:var(--white);
+  font-family:'Fredoka One',cursive;
+  font-size:1rem;
+  text-align:left;
+  padding:16px;
+  white-space:nowrap;
+}
+.tbl td{
+  padding:15px 16px;
+  border-bottom:1px solid var(--border);
+  color:var(--dark);
+  vertical-align:top;
+}
+.tbl tr:nth-child(even) td{background:rgba(56,182,255,.045)}
+.tbl tr:hover td{background:var(--gold-soft)}
+
+/* NOTES */
+.nb,.px{
+  border-radius:24px;
+  padding:22px 24px;
+  font-size:1.03rem;
+  line-height:1.85;
+  color:var(--dark);
+  margin-top:18px;
+  background:var(--blue-soft)!important;
+  border-left:8px solid var(--blue)!important;
+}
+.nb strong,.px strong{color:var(--dark)}
+.px{
+  background:var(--gold-soft)!important;
+  border:2px solid var(--gold)!important;
+}
+.pxt{
+  font-family:'Fredoka One',cursive;
+  font-size:1.25rem;
+  color:var(--dark);
+  margin-bottom:10px;
+}
+.pxb{font-size:1.03rem;color:var(--dark);line-height:1.85}
+
+/* SEPARATORS / EMAIL HEADERS */
+.sep-t{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(1.18rem,2vw,1.55rem);
+  color:var(--dark);
+  padding:0 0 14px 0;
+  border-bottom:4px solid var(--blue);
+  margin-bottom:18px;
+}
+.sep-t.c2{border-bottom-color:var(--purple)}
+.em-s{
+  border-left:8px solid var(--blue);
+  padding-left:20px;
+  margin-bottom:28px;
+}
+.em-s.c2{border-left-color:var(--purple)}
+.em-h{
+  font-family:'Fredoka One',cursive;
+  color:var(--dark);
+  font-size:1.25rem;
+}
+.em-sub{
+  color:var(--dark);
+  opacity:.78;
+  font-size:1rem;
+  margin-bottom:14px;
+  font-style:italic;
+}
+
+/* APPORT ANALYTIQUE */
+.apport{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:var(--white);
+  border-radius:34px;
+  padding:34px;
+  box-shadow:var(--shadow);
+}
+.apport::after{
+  content:"";
+  position:absolute;
+  right:-80px;
+  bottom:-80px;
+  width:220px;height:220px;
+  border-radius:50%;
+  background:rgba(255,255,255,.15);
+}
+.appt{
+  position:relative;z-index:1;
+  font-family:'Alfa Slab One',serif;
+  color:var(--white);
+  font-size:clamp(1.35rem,2.3vw,2rem);
+  margin-bottom:22px;
+}
+.appi{
+  position:relative;z-index:1;
+  font-size:1.04rem;
+  line-height:1.85;
+  color:var(--white);
+  padding:16px 0;
+  border-bottom:1px solid rgba(255,255,255,.28);
+}
+.appi:last-child{border-bottom:0;padding-bottom:0}
+.appl{
+  color:var(--gold);
+  font-weight:900;
+  font-size:.9rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:6px;
+}
+
+/* CAMPAIGN COMPARISON */
+.camp-compare{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+  margin-bottom:24px;
+}
+.camp-card{
+  border-radius:30px;
+  padding:26px;
+  border:2px solid;
+  box-shadow:0 10px 26px rgba(77,77,77,.06);
+}
+.camp-card.c1{background:var(--blue-soft);border-color:var(--blue)}
+.camp-card.c2{background:var(--purple-soft);border-color:var(--purple)}
+.camp-head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.camp-badge{
+  font-family:'Fredoka One',cursive;
+  font-size:1rem;
+  border-radius:999px;
+  padding:8px 16px;
+  color:var(--white);
+}
+.camp-badge.c1{background:var(--blue)}
+.camp-badge.c2{background:var(--purple)}
+.camp-title{
+  font-family:'Fredoka One',cursive;
+  font-size:1.15rem;
+  color:var(--dark);
+}
+.camp-sub{
+  color:var(--dark);
+  opacity:.78;
+  font-size:1rem;
+}
+.kpi-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:13px 0;
+  gap:14px;
+  border-bottom:1px solid var(--border);
+}
+.kpi-row:last-child{border-bottom:0}
+.kpi-label{
+  font-size:1rem;
+  font-weight:700;
+  color:var(--dark);
+}
+.kpi-val{
+  font-family:'Fredoka One',cursive;
+  font-size:1.15rem;
+  color:var(--dark);
+  text-align:right;
+}
+.arrow-section{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:26px;
+  margin:24px 0;
+  box-shadow:0 8px 20px rgba(77,77,77,.05);
+}
+.arrow-title{
+  font-family:'Fredoka One',cursive;
+  color:var(--dark);
+  font-size:1.3rem;
+  text-align:center;
+  margin-bottom:18px;
+}
+.arrow-row{
+  display:grid;
+  grid-template-columns:190px 90px 40px 90px 1fr;
+  align-items:center;
+  gap:12px;
+  padding:16px;
+  margin-bottom:12px;
+  border-radius:20px;
+  background:var(--blue-soft);
+  border:1px solid var(--border);
+}
+.arrow-row:nth-child(3){background:var(--purple-soft)}
+.arrow-row:nth-child(4){background:var(--gold-soft)}
+.arrow-label,.arrow-note{
+  font-size:1rem;
+  color:var(--dark);
+  font-weight:700;
+}
+.arrow-note{font-weight:600;opacity:.86}
+.arrow-c1,.arrow-c2,.arrow-icon{
+  font-family:'Fredoka One',cursive;
+  font-size:1.2rem;
+  color:var(--dark);
+  text-align:center;
+}
+
+/* RECOMMANDATIONS / CLICS / TAGS */
+.rc,.clic-r{
+  border-radius:24px;
+  padding:18px 20px;
+  background:var(--white);
+  border:1.5px solid var(--border);
+  box-shadow:0 8px 20px rgba(77,77,77,.05);
+  font-size:1.02rem;
+  color:var(--dark);
+}
+.rc{display:flex;gap:18px;margin-bottom:16px}
+.rn{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--blue);
+  color:var(--white);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Fredoka One',cursive;
+  flex-shrink:0;
+}
+.rt{
+  font-family:'Fredoka One',cursive;
+  font-size:1.18rem;
+  color:var(--dark);
+  margin-bottom:8px;
+}
+.rb,.ri{
+  font-size:1rem;
+  line-height:1.75;
+  color:var(--dark);
+}
+.ri{font-weight:800;margin-top:8px}
+.clic-r{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.leg{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  font-size:1rem;
+  margin-bottom:18px;
+}
+.leg span{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--dark);
+  font-weight:800;
+}
+.sq{
+  width:18px;height:18px;
+  border-radius:6px;
+  background:var(--blue);
+}
+
+/* Inline hard-coded colors neutralisation */
+[style*="#4d4d4d"],[style*="#6b7fa0"],[style*="#fe9452"],[style*="#ffbd59"]{color:var(--dark)!important}
+[style*="rgba(56,182,255,.12)"]{background:var(--blue-soft)!important}
+[style*="#ffe8b0"]{color:var(--gold)!important}
+
+/* RESPONSIVE */
+@media (max-width:1100px){
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .camp-compare,.swot-g,.hlg{grid-template-columns:1fr}
+  .arrow-row{grid-template-columns:1fr; text-align:left}
+  .arrow-c1,.arrow-c2,.arrow-icon{text-align:left}
+}
+@media (max-width:760px){
+  .db{padding:16px;gap:20px}
+  .topbar,.card,.hl,.apport{border-radius:24px;padding:22px}
+  .top-l{align-items:flex-start}
+  .logo{width:56px;height:56px;border-radius:18px}
+  .tabs{top:0;border-radius:18px}
+  .tab{font-size:.95rem;padding:11px 14px}
+  .g4,.g3,.g2{grid-template-columns:1fr}
+  .tbl{font-size:.92rem;min-width:820px}
+  .tbl th,.tbl td{padding:13px}
+}
+@media (max-width:480px){
+  html{font-size:16px}
+  .db{padding:12px}
+  .topbar,.card,.hl,.apport{padding:18px}
+  .top-l{gap:14px}
+  .bg{font-size:.88rem;padding:8px 12px}
+  .mv{font-size:2rem}
+  .hlv{font-size:2.3rem}
+}
+</style>
+
+</head>
+<body>
+<div class="db">
+
+<div class="topbar">
+  <div class="top-l">
+    <div class="logo"><i class="ti ti-mail" style="color:#fff;font-size:22px" aria-hidden="true"></i></div>
+    <div>
+      <div class="top-h">Dashboard analyse emailing — Marvel Pharma</div>
+      <div class="top-s">Campagne 1 (nov–déc 2025) · Campagne 2 (fév–mars 2026) · Stage Data Marketing · Mai 2026</div>
+    </div>
+  </div>
+  <div class="bgs">
+    <span class="bg">7 emails analysés</span>
+    <span class="bg">2 campagnes</span>
+    <span class="bg">Vrais CTR calculés</span>
+    <span class="bg">Données Brevo mai 2026</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" onclick="show('vue',this)">Vue d'ensemble</div>
+  <div class="tab" onclick="show('c1',this)">Campagne 1</div>
+  <div class="tab" onclick="show('c2',this)">Campagne 2</div>
+  <div class="tab" onclick="show('swot',this)">Synthèse &amp; SWOT</div>
+  <div class="tab" onclick="show('det',this)">Analyse détaillée</div>
+  <div class="tab" onclick="show('clics',this)">Clics &amp; Redirections</div>
+  <div class="tab" onclick="show('recos',this)">Recommandations</div>
+</div>
+
+<!-- ══ VUE D'ENSEMBLE ══ -->
+<div id="vue" class="sec">
+
+  <div class="g4">
+    <div class="met"><div class="ml">Hard bounce au départ</div><div class="mv vr">3,60 %</div><div class="ms">Campagne 1 Mail 1 · 302 adresses invalides</div></div>
+    <div class="met"><div class="ml">Hard bounce à l'arrivée</div><div class="mv vt">0,08 %</div><div class="ms">Campagne 2 Mail 3 · réduction de 97 %</div></div>
+    <div class="met"><div class="ml">Meilleur CTOR</div><div class="mv vp">33,63 %</div><div class="ms">Campagne 2 Mail 2 ★ · macaron menthol</div></div>
+    <div class="met"><div class="ml">Pire CTOR</div><div class="mv vr">2,42 %</div><div class="ms">Campagne 1 Mail 2 · objet générique</div></div>
+    <div class="met"><div class="ml">Désinscriptions min.</div><div class="mv vt">0,47 %</div><div class="ms">Campagne 2 Mail 2 ★ · divisé par 3</div></div>
+    <div class="met"><div class="ml">Nouveaux contacts</div><div class="mv vt">+1 475</div><div class="ms">Base 8 731 → 10 206</div></div>
+  </div>
+
+  <!-- Tableau des 7 emails -->
+  <div class="card">
+    <div class="ct">Résultats clés des 7 emails</div>
+    <div class="cs">Tous les chiffres proviennent des rapports exportés depuis Brevo en mai 2026. Les cellules en vert indiquent les meilleures performances, en rouge les points à améliorer. La colonne MPP Apple correspond aux ouvertures automatiques générées par Apple Mail — elles gonflent le taux d'ouverture et doivent être interprétées avec prudence.</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Email</th><th>Date · heure</th><th>Envoyés</th><th>Livraison</th><th>Hard bounce</th><th>Ouverture</th><th>MPP Apple</th><th>CTR Brevo</th><th>CTOR</th><th>Désinscrip.</th></tr></thead>
+        <tbody>
+          <tr><td><strong >Campagne 1 Mail 1</strong></td><td>4 nov. · 10h13</td><td>8 389</td><td style="font-weight:700">95,55 %</td><td style="font-weight:700">3,60 %</td><td style="font-weight:700">38,06 %</td><td>1 124</td><td>2,81 %</td><td>7,37 %</td><td >1,36 %</td></tr>
+          <tr ><td><strong >Campagne 1 Mail 2</strong></td><td>18 nov. · 8h33</td><td>7 978</td><td>98,55 %</td><td>0,55 %</td><td>36,86 %</td><td>1 108</td><td style="font-weight:700">0,89 %</td><td style="font-weight:700">2,42 %</td><td>1,25 %</td></tr>
+          <tr><td><strong >Campagne 1 Mail 3</strong></td><td>9 déc. · 8h33</td><td>7 838</td><td>98,30 %</td><td>0,73 %</td><td>36,34 %</td><td>1 059</td><td>1,37 %</td><td>3,79 %</td><td>1,13 %</td></tr>
+          <tr ><td><strong >Campagne 2 Mail 1</strong></td><td>17 fév. · 8h05</td><td>8 030</td><td>97,90 %</td><td>0,88 %</td><td>32,72 %</td><td>923</td><td style="font-weight:700">6,24 %</td><td style="font-weight:700">19,17 %</td><td>0,83 %</td></tr>
+          <tr ><td><strong >Campagne 2 Mail 2 ★</strong></td><td>3 mars · 7h35</td><td>7 894</td><td style="font-weight:700">98,68 %</td><td style="font-weight:700">0,10 %</td><td>31,49 %</td><td>962</td><td style="font-weight:700">10,56 %</td><td style="font-weight:700">33,63 %</td><td style="font-weight:700">0,47 %</td></tr>
+          <tr ><td><strong >Campagne 2 Mail 3</strong></td><td>10 mars · 7h35</td><td>7 842</td><td>98,55 %</td><td style="font-weight:700">0,08 %</td><td>32,78 %</td><td>984</td><td>3,73 %</td><td>11,41 %</td><td>0,76 %</td></tr>
+          <tr><td><strong >Campagne 2 Mail 4</strong></td><td>24 mars · 7h34</td><td>7 778</td><td>98,48 %</td><td style="font-weight:700">0,09 %</td><td>31,42 %</td><td>1 000</td><td>5,30 %</td><td>16,91 %</td><td>0,89 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Graphique CTOR -->
+  <div class="card">
+    <div class="ct">Évolution du CTOR sur les 7 emails</div>
+    <div class="cs">Le CTOR (Click-To-Open Rate) mesure parmi les personnes qui ont ouvert l'email, combien ont cliqué. C'est l'indicateur le plus fiable car il isole l'intérêt pour le contenu, indépendamment du volume d'envoi.</div>
+    <div class="leg">
+      <span><span class="sq" ></span>Campagne 1 (nov.–déc. 2025) — présentation de marque</span>
+      <span><span class="sq" ></span>Campagne 2 (fév.–mars 2026) — emails produit-centriques</span>
+    </div>
+    <div style="position:relative;width:100%;height:210px"><canvas id="cv_ctor" role="img" aria-label="CTOR : Camp.1 M1 7.37, Camp.1 M2 2.42, Camp.1 M3 3.79, Camp.2 M1 19.17, Camp.2 M2 33.63 pic, Camp.2 M3 11.41, Camp.2 M4 16.91">CTOR</canvas></div>
+    <div class="nb" style="background:rgba(56,182,255,.12);border-left:4px solid #38b6ff">
+      <strong >Comment lire ce graphique :</strong><br>
+      Les barres <strong>bleues</strong> = Campagne 1 (nov.–déc. 2025). Les barres <strong>violettes</strong> = Campagne 2 (fév.–mars 2026). La chute de Campagne 1 Mail 1 (7,37&nbsp;%) à Campagne 1 Mail 2 (2,42&nbsp;%) s'explique par un objet centré sur Marvel et non sur le pharmacien. Le pic de Campagne 2 Mail 2 (33,63&nbsp;%) vient d'un objet qui nomme un produit précis dans le contexte métier du pharmacien ("Le macaron menthol dans votre conseil officinal"). La redescente à Campagne 2 Mail 3 (11,41&nbsp;%), envoyé à la même heure et à la même base, prouve que c'est l'objet seul — pas le timing ni le contenu — qui détermine l'engagement.
+    </div>
+  </div>
+
+  <!-- COMPARAISON CAMPAGNES — nouvelle approche cartes -->
+  <div class="card">
+    <div class="ct">Comparaison globale — Campagne 1 vs Campagne 2</div>
+    <div class="cs">Chaque indicateur est présenté côte à côte pour permettre une lecture directe. La Campagne 2 est meilleure sur tous les indicateurs d'engagement grâce à deux leviers : le nettoyage de la base et le changement de stratégie de contenu.</div>
+
+    <div class="camp-compare">
+      <div class="camp-card c1">
+        <div class="camp-head">
+          <span class="camp-badge c1">Campagne 1</span>
+          <div>
+            <div class="camp-title">Novembre — Décembre 2025</div>
+            <div class="camp-sub">3 emails · Stratégie marque institutionnelle</div>
+          </div>
+        </div>
+        <div class="kpi-row"><span class="kpi-label">Hard bounce moyen</span><span class="kpi-val vr">1,63 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Meilleur CTOR</span><span class="kpi-val" >7,37 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Désinscriptions min.</span><span class="kpi-val va">1,13 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Produit dans l'objet</span><span class="kpi-val vr">Jamais</span></div>
+        <div class="kpi-row"><span class="kpi-label">Preuve sociale</span><span class="kpi-val vr">Absente</span></div>
+        <div class="kpi-row"><span class="kpi-label">Heure d'envoi</span><span class="kpi-val" >10h13 → 8h33</span></div>
+      </div>
+      <div class="camp-card c2">
+        <div class="camp-head">
+          <span class="camp-badge c2">Campagne 2</span>
+          <div>
+            <div class="camp-title">Février — Mars 2026</div>
+            <div class="camp-sub">4 emails · Stratégie emails produit-centriques</div>
+          </div>
+        </div>
+        <div class="kpi-row"><span class="kpi-label">Hard bounce moyen</span><span class="kpi-val vt">0,35 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Meilleur CTOR</span><span class="kpi-val vp">33,63 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Désinscriptions min.</span><span class="kpi-val vt">0,47 %</span></div>
+        <div class="kpi-row"><span class="kpi-label">Produit dans l'objet</span><span class="kpi-val vt">3 emails sur 4</span></div>
+        <div class="kpi-row"><span class="kpi-label">Preuve sociale</span><span class="kpi-val vt">Introduite</span></div>
+        <div class="kpi-row"><span class="kpi-label">Heure d'envoi</span><span class="kpi-val vt">8h05 → 7h35</span></div>
+      </div>
+    </div>
+
+    <div class="arrow-section">
+      <div class="arrow-title">Progression mesurée entre les deux campagnes</div>
+      <div class="arrow-row">
+        <div class="arrow-label">Hard bounce</div>
+        <div class="arrow-c1 vr">1,63 %</div>
+        <div class="arrow-icon">→</div>
+        <div class="arrow-c2 vt">0,35 %</div>
+        <div class="arrow-note">Réduction de 79 % grâce au nettoyage de la base</div>
+      </div>
+      <div class="arrow-row">
+        <div class="arrow-label">Meilleur CTOR</div>
+        <div class="arrow-c1" style="color:#38b6ff">7,37 %</div>
+        <div class="arrow-icon">→</div>
+        <div class="arrow-c2 vp">33,63 %</div>
+        <div class="arrow-note">Multiplié par 4,6 grâce aux objets précis produits</div>
+      </div>
+      <div class="arrow-row">
+        <div class="arrow-label">Désinscriptions min.</div>
+        <div class="arrow-c1 va">1,13 %</div>
+        <div class="arrow-icon">→</div>
+        <div class="arrow-c2 vt">0,47 %</div>
+        <div class="arrow-note">Divisé par 2,4 — base de plus en plus qualifiée</div>
+      </div>
+    </div>
+
+    <div class="nb" style="background:rgba(56,182,255,.12);border-left:4px solid #38b6ff">
+      <strong >Interprétation importante :</strong> La baisse du taux d'ouverture entre les deux campagnes (38 % → 31 %) est souvent perçue comme un recul. C'est en réalité un signal positif. Les pharmaciens non intéressés ont quitté la base progressivement via les désinscriptions. Il reste une audience qualifiée — ce qui explique pourquoi l'engagement (CTOR) explose malgré moins d'ouvertures.
+    </div>
+  </div>
+
+  <!-- Apport analytique -->
+  <div class="apport">
+    <div class="appt">Mon apport analytique — ce que les données Brevo ne montrent pas directement</div>
+    <div class="appi"><div class="appl">Découverte 1 — vrai CTR vs CTR Brevo</div>Brevo additionne dans son CTR les clics sur le lien de désinscription et le lien miroir — ces clics n'ont aucune valeur commerciale. En les soustrayant, le CTR de Campagne 1 Mail 1 passe de 2,81 % à 0,68 %. C'est un écart de ×4. Les vrais chiffres de la Campagne 1 sont donc bien inférieurs à ce que Brevo affiche.</div>
+    <div class="appi"><div class="appl">Découverte 2 — le paradoxe du Campagne 1 Mail 3</div>Campagne 1 Mail 3 est l'email avec le meilleur contenu de la Campagne 1 (accroche directe, offre carnet, argument patients) mais son vrai CTR vers le site est le plus bas : 0,31 %. Explication : fatigue de séquence après 3 emails sur le même sujet, et l'offre carnet positionnée en bas et absente de l'objet.</div>
+    <div class="appi"><div class="appl">Découverte 3 — l'objet comme variable isolée</div>Campagne 2 Mail 2 et Campagne 2 Mail 3 ont été envoyés le même jour de la semaine, à la même heure (7h35), à la même base, avec le même format. Seule différence : le nom du produit dans l'objet. CTOR de 33,63 % vs 11,41 %. Preuve directe que c'est l'objet qui pilote l'engagement.</div>
+    <div class="appi"><div class="appl">Découverte 4 — problème de consentement initial</div>Sur Campagne 1 Mail 1, 19,35 % des désinscriptions déclarent "je ne me souviens pas avoir demandé". Ce chiffre tombe à 7,14 % sur Campagne 2 Mail 2 après le nettoyage — preuve de l'efficacité du travail de qualification de la base.</div>
+  </div>
+
+</div>
+
+<!-- ══ CAMPAGNE 1 ══ -->
+<div id="c1" class="sec hid">
+
+  <div class="card">
+    <div class="ct">Campagne 1 — Vue d'ensemble</div>
+    <div class="cs">3 emails envoyés entre le 4 novembre et le 9 décembre 2025. Stratégie : présentation institutionnelle de Marvel Pharma et de son site de commande en ligne. Aucun produit précis mis en avant dans les objets. C'est la prise de contact initiale avec des pharmaciens qui ne connaissent pas encore Marvel Pharma.</div>
+    <div class="g3">
+      <div class="met"><div class="ml">Total emails envoyés</div><div class="mv">24 205</div><div class="ms">3 envois · base pharmacies France</div></div>
+      <div class="met"><div class="ml">Meilleure ouverture</div><div class="mv vt">38,06 %</div><div class="ms">Campagne 1 Mail 1 · bien au-dessus moy. B2B (20-25 %)</div></div>
+      <div class="met"><div class="ml">Vrai CTR moyen vers le site</div><div class="mv vr">0,53 %</div><div class="ms">Brevo affichait 1,69 % — écart ×3</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t">Campagne 1 Mail 1 · 4 novembre 2025 · Envoi à 10h13</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Pharmacien, Marvel vous simplifie la commande en ligne !"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Envoyés</div><div class="mv">8 389</div></div>
+      <div class="met"><div class="ml">Livraison</div><div class="mv vr">95,55 %</div><div class="ms">Hard bounce élevé</div></div>
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv vr">3,60 %</div><div class="ms">302 adresses invalides</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv vt">38,06 %</div><div class="ms">3 051 ouvertures · MPP : 1 124</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv">7,37 %</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv vr">1,36 %</div><div class="ms">109 personnes · 1 spam</div></div>
+    </div>
+    <div class="ins ig"><div class="it">Visuel et contenu</div><div class="ib2">Header turquoise avec une pharmacienne et la gamme Marvel. Corps : présentation de la marque depuis 1885 + description du site de commande. La partie la plus convaincante (3 bénéfices concrets) est en bas de l'email — les pharmaciens qui ne scrollent pas entièrement ne la voient jamais.</div></div>
+    <div class="ins ir"><div class="it">Hard bounce à 3,60 % — base non nettoyée</div><div class="ib2">302 adresses invalides sur 8 389 envois. Au-delà de 2 %, les FAI peuvent classer l'expéditeur comme suspect. Ce premier email a permis d'identifier les adresses mortes pour les supprimer des envois suivants — c'est pour ça que le hard bounce chute dès Campagne 1 Mail 2.</div></div>
+    <div class="ins ia"><div class="it">Timing — pic à 10h00 avec 1 032 ouvertures</div><div class="ib2">Email envoyé à 10h13. Pic dans les 47 premières minutes, puis forte chute dès 14h00. Les ouvertures à 22h-23h sont des ouvertures Apple MPP automatiques. Conclusion : un envoi à 9h00 aurait capté la vague matinale dès l'ouverture des pharmacies.</div></div>
+    <div class="ins ip"><div class="it">Motifs de désinscription — alerte consentement</div><div class="ib2"><strong>19,35 %</strong> : "Je ne me souviens pas avoir demandé à recevoir ces emails." Presque 1 personne sur 5 ne sait pas pourquoi elle est dans la base — problème de consentement dans la base initiale. Ce chiffre tombera à 7,14 % sur Campagne 2 Mail 2 après le nettoyage.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t">Campagne 1 Mail 2 · 18 novembre 2025 · Envoi à 8h33</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Pourquoi avons-nous créé ce canal direct ?"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Envoyés</div><div class="mv">7 978</div></div>
+      <div class="met"><div class="ml">Livraison</div><div class="mv vt">98,55 %</div><div class="ms">+3 pts vs Campagne 1 Mail 1</div></div>
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv vt">0,55 %</div><div class="ms">44 adresses · −85 %</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv">36,86 %</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv vr">2,42 %</div><div class="ms">Pire de toute la campagne</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv">1,25 %</div></div>
+    </div>
+    <div class="ins ig"><div class="it">Délivrabilité améliorée de 85 % en un seul envoi</div><div class="ib2">Les 302 adresses invalides identifiées sur Campagne 1 Mail 1 ont été automatiquement supprimées par Brevo. Hard bounce divisé par 6. C'est la preuve que chaque campagne contribue progressivement à qualifier la base.</div></div>
+    <div class="ins ir"><div class="it">CTOR 2,42 % — pire engagement de toute la campagne</div><div class="ib2">L'objet pose une question sur Marvel Pharma, pas sur le pharmacien. Il n'y a aucun bénéfice visible avant l'ouverture. Le pharmacien ouvre par curiosité mais ne ressent aucune urgence de cliquer. Résultat : seulement 70 clics sur 2 898 ouvertures.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t">Campagne 1 Mail 3 · 9 décembre 2025 · Envoi à 8h33</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Un lien plus direct avec Marvel Pharma"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Envoyés</div><div class="mv">7 838</div></div>
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv">0,73 %</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv">36,34 %</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv">3,79 %</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv vt">1,13 %</div><div class="ms">3ème baisse consécutive</div></div>
+    </div>
+    <div class="px"><div class="pxt">Le paradoxe du Campagne 1 Mail 3 — meilleur contenu, pire vrai CTR (0,31 %)</div><div class="pxb">Campagne 1 Mail 3 est l'email avec le meilleur contenu de la Campagne 1 : accroche directe ("Et si vous receviez vos produits en quelques clics ?"), process en 3 étapes, argument orienté patient, et la seule offre de la Campagne 1 — un carnet offert pour toute commande.<br><br>Pourtant son vrai CTR vers le site est le plus bas : 0,31 % (24 clics uniques). Deux raisons : (1) fatigue de séquence — 3 emails sur le même sujet en 5 semaines, les pharmaciens intéressés ont déjà cliqué avant. (2) L'offre du carnet est en bas de l'email et absente de l'objet. Si cette offre avait été dans l'objet, cet email aurait probablement été le meilleur de la séquence.</div></div>
+  </div>
+
+</div>
+
+<!-- ══ CAMPAGNE 2 ══ -->
+<div id="c2" class="sec hid">
+
+  <div class="card">
+    <div class="ct">Campagne 2 — Vue d'ensemble</div>
+    <div class="cs">4 emails envoyés entre le 17 février et le 24 mars 2026. Changement de stratégie radical par rapport à la Campagne 1 : chaque email se concentre sur un produit précis nommé dans l'objet. L'impact est immédiat sur tous les indicateurs d'engagement.</div>
+    <div class="g3">
+      <div class="met"><div class="ml">Total emails envoyés</div><div class="mv">31 544</div><div class="ms">4 envois · base enrichie +1 475</div></div>
+      <div class="met"><div class="ml">Meilleur CTOR</div><div class="mv vp">33,63 %</div><div class="ms">Campagne 2 Mail 2 ★ — record absolu</div></div>
+      <div class="met"><div class="ml">Hard bounce moyen</div><div class="mv vt">0,35 %</div><div class="ms">vs 1,63 % en Campagne 1 · −79 %</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t c2">Campagne 2 Mail 1 · 17 février 2026 · Envoi à 8h05</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Depuis 1885, une même exigence : la qualité"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Envoyés</div><div class="mv">8 030</div></div>
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv">0,88 %</div><div class="ms">71 adresses · nouveaux contacts</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv">32,72 %</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv vt">19,17 %</div><div class="ms">×2,6 vs meilleur C1</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv vt">0,83 %</div></div>
+    </div>
+    <div class="ins ig"><div class="it">Premier email avec visuel produit + statistique sourcée</div><div class="ib2">Le bandeau header montre une poire de lavement — premier produit précis dans un visuel depuis le début de la campagne. L'email introduit aussi une statistique sourcée : "51,4 % des Français ont déjà eu recours à ce type de produit (source : revue Springer)". Ce chiffre dit au pharmacien que c'est un produit que ses patients connaissent et peuvent lui demander — argument décisif.</div></div>
+    <div class="ins ib"><div class="it">Première page produit dédiée dans les redirections</div><div class="ib2">Pour la première fois dans toute la campagne, des clics vont vers une fiche produit dédiée : /product/poire-a-lavement-n14-480ml-canule · 10 clics uniques. C'est une avancée structurelle importante pour mesurer les conversions.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t c2">Campagne 2 Mail 2 ★ · 3 mars 2026 · Envoi à 7h35 — MEILLEUR EMAIL</div>
+    <div style="font-size:13px;font-style:italic;color:#8c52ff;margin-bottom:14px">Objet : "Le macaron menthol dans votre conseil officinal"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Envoyés</div><div class="mv">7 894</div></div>
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv vt">0,10 %</div><div class="ms">8 adresses · quasi nul</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv">31,49 %</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv vp">33,63 %</div><div class="ms">825 clics · 1 sur 3 a cliqué</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv vt">0,47 %</div><div class="ms">0 plainte spam</div></div>
+    </div>
+    <div class="ins ig"><div class="it">Témoignage client en tête d'email — stratégie inédite</div><div class="ib2">Première utilisation d'un témoignage client dans toute la campagne : "En 2025, à la suite de maux de tête, j'en ai obtenu un et depuis que je l'ai essayé, je ne peux plus m'en passer !" Cette preuve sociale est très efficace dans le secteur pharmaceutique — le pharmacien comprend immédiatement la valeur du produit pour ses patients.</div></div>
+    <div class="ins ig"><div class="it">0 plainte spam · 0,47 % de désinscriptions</div><div class="ib2">Le motif "je ne me souviens pas avoir demandé" tombe à 7,14 % (contre 19,35 % sur Campagne 1 Mail 1). La base est maintenant très qualifiée — seuls les pharmaciens vraiment intéressés par Marvel Pharma sont encore dans la liste.</div></div>
+    <div class="ins ia"><div class="it">Limite : 65 % des clics vont vers la page d'accueil, pas vers le produit</div><div class="ib2">Sur les clics commerciaux, seulement 17 % vont vers la fiche macaron menthol. Les pharmaciens explorent le site mais ne trouvent pas directement le produit. Sans page dédiée avec bouton Commander immédiat, les conversions ne sont pas mesurables.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t c2">Campagne 2 Mail 3 · 10 mars 2026 · Envoi à 7h35</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Un classique indispensable en officine"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv vt">0,08 %</div><div class="ms">Record absolu · 6 adresses</div></div>
+      <div class="met"><div class="ml">Ouverture</div><div class="mv">32,78 %</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv va">11,41 %</div><div class="ms">vs 33,63 % la semaine précédente</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv">0,76 %</div><div class="ms">0 plainte spam</div></div>
+    </div>
+    <div class="ins ia"><div class="it">Même heure, même base, même format — mais CTOR divisé par 3</div><div class="ib2">Campagne 2 Mail 3 est envoyé exactement une semaine après Campagne 2 Mail 2, à la même heure (7h35), à la même base, avec le même format. La seule différence : l'objet ne nomme pas le produit (la vessie à glace). CTOR : 11,41 % vs 33,63 %. C'est la démonstration la plus propre de l'impact de l'objet sur l'engagement.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="sep-t c2">Campagne 2 Mail 4 · 24 mars 2026 · Envoi à 7h34</div>
+    <div style="font-size:13px;font-style:italic;color:#4d4d4d;margin-bottom:14px">Objet : "Des solutions essentielles pour vos besoins en officine"</div>
+    <div class="g4" style="margin-bottom:16px">
+      <div class="met"><div class="ml">Hard bounce</div><div class="mv vt">0,09 %</div><div class="ms">7 adresses · base quasi parfaite</div></div>
+      <div class="met"><div class="ml">CTOR</div><div class="mv">16,91 %</div><div class="ms">Correct mais ×2 sous Campagne 2 Mail 2</div></div>
+      <div class="met"><div class="ml">Désinscriptions</div><div class="mv">0,89 %</div><div class="ms">1 plainte spam</div></div>
+    </div>
+    <div class="ins ia"><div class="it">Multi-produits = attention du pharmacien diluée</div><div class="ib2">Campagne 2 Mail 4 présente plusieurs produits (poires, macaron, vessies à glace). Le pharmacien ne sait pas sur quoi se concentrer — son attention se dilue. Résultat : CTOR de 16,91 % contre 33,63 % sur Campagne 2 Mail 2.</div></div>
+    <div class="ins ir"><div class="it">Signal de fatigue : "je reçois trop souvent" apparaît pour la première fois</div><div class="ib2">8,11 % des désinscriptions déclarent "je reçois ces emails trop souvent". Ce motif n'existait pas sur les emails précédents. 4 emails en 5 semaines commence à être perçu comme excessif par certains pharmaciens.</div></div>
+  </div>
+
+</div>
+
+<!-- ══ SWOT ══ -->
+<div id="swot" class="sec hid">
+
+  <div class="hl">
+    <div class="hlt">La leçon principale — l'impact de l'objet sur l'engagement</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px">Même base · même heure d'envoi · même format d'email · seule variable : l'objet</div>
+    <div class="hlg">
+      <div class="hlc">
+        <div class="hll">Campagne 1 Mail 2 — objet générique</div>
+        <div class="hlv" style="color:#ffe8b0">2,42 %</div>
+        <div class="hls">CTOR · 70 clics<br>"Pourquoi avons-nous créé ce canal ?"<br>Parle de Marvel, pas du pharmacien</div>
+      </div>
+      <div class="hlc">
+        <div class="hll">Campagne 2 Mail 3 — objet vague</div>
+        <div class="hlv" style="color:#ffe8b0">11,41 %</div>
+        <div class="hls">CTOR · 289 clics<br>"Un classique indispensable en officine"<br>Parle du métier mais sans produit nommé</div>
+      </div>
+      <div class="hlc" style="border:2px solid rgba(255,255,255,.6)">
+        <div class="hll">Campagne 2 Mail 2 ★ — objet précis produit</div>
+        <div class="hlv" style="color:#ffe8b0">33,63 %</div>
+        <div class="hls">CTOR · 825 clics<br>"Le macaron menthol dans votre conseil officinal"<br>Produit nommé + contexte métier précis</div>
+      </div>
+    </div>
+    <div class="hln"><strong>Pourquoi ces 3 emails et pas les 7 ?</strong> Ces 3 emails permettent d'isoler une seule variable — l'objet — dans des conditions comparables. Campagne 2 Mail 2 et Campagne 2 Mail 3 ont été envoyés à la même heure (7h35), à la même base, avec le même format. Campagne 1 Mail 2 est la référence du pire cas. Les 4 autres emails ont des contextes différents qui fausseraient la comparaison. Conclusion : nommer un produit précis dans l'objet multiplie le CTOR par 14.</div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Analyse SWOT complète — les deux campagnes</div>
+    <div class="cs">Chaque point est tiré directement de l'analyse des 7 emails et des vrais chiffres calculés — pas des statistiques génériques.</div>
+    <div class="swot-g">
+      <div class="sb swf" >
+        <div class="st" style="color:#38b6ff"><i class="ti ti-trending-up" aria-hidden="true"></i> Forces</div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Taux d'ouverture > 30 % sur tous les emails.</strong> La moyenne B2B est de 20-25 %. Les pharmaciens font confiance à Marvel Pharma comme expéditeur.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Hard bounce réduit de 97 %.</strong> De 302 adresses invalides à 6 — résultat direct du nettoyage et qualification de la base entre les deux campagnes.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>CTOR record de 33,63 %</strong> sur Campagne 2 Mail 2. 1 pharmacien sur 3 ayant ouvert l'email a cliqué — performance exceptionnelle en B2B.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Désinscriptions divisées par 3.</strong> De 1,36 % à 0,47 % — la base devient plus qualifiée à chaque envoi.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>0 plainte spam</strong> sur Campagne 2 Mail 2 et Campagne 2 Mail 3 — excellente réputation d'expéditeur maintenue.</div></div>
+      </div>
+      <div class="sb sww" >
+        <div class="st" style="color:#fe9452"><i class="ti ti-trending-down" aria-hidden="true"></i> Faiblesses</div>
+        <div class="si"><div class="dot" style="background:#fe9452"></div><div style="font-size:13px;color:#fe9452"><strong>CTR Brevo trompeur.</strong> Vrai CTR Campagne 1 Mail 1 = 0,68 % alors que Brevo affiche 2,81 %. Écart ×4 — les statistiques Brevo surestiment les performances réelles.</div></div>
+        <div class="si"><div class="dot" style="background:#fe9452"></div><div style="font-size:13px;color:#fe9452"><strong>CTA en bas en Campagne 1.</strong> Le bouton était après tout le contenu — invisible pour les pharmaciens qui ne scrollent pas.</div></div>
+        <div class="si"><div class="dot" style="background:#fe9452"></div><div style="font-size:13px;color:#fe9452"><strong>Pas de page produit dédiée.</strong> 65 % des clics Campagne 2 Mail 2 vont à la page d'accueil — conversions non mesurables.</div></div>
+        <div class="si"><div class="dot" style="background:#fe9452"></div><div style="font-size:13px;color:#fe9452"><strong>19 % de problème de consentement</strong> sur Campagne 1 Mail 1 — base initiale avec contacts sans accord explicite.</div></div>
+        <div class="si"><div class="dot" style="background:#fe9452"></div><div style="font-size:13px;color:#fe9452"><strong>Signal "trop fréquent"</strong> apparu sur Campagne 2 Mail 4 — 4 emails en 5 semaines atteint les limites.</div></div>
+      </div>
+      <div class="sb swo" >
+        <div class="st" style="color:#38b6ff"><i class="ti ti-arrow-right" aria-hidden="true"></i> Opportunités</div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Systématiser la formule Campagne 2 Mail 2 :</strong> objet précis + visuel produit + témoignage + chiffre sourcé + CTA en haut.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Créer une page produit par email</strong> pour transformer les clics en commandes mesurables.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>Segmenter par comportement :</strong> cliqueurs actifs, ouvreurs, inactifs — messages différents pour chaque groupe.</div></div>
+        <div class="si"><div class="dot" style="background:#38b6ff"></div><div style="font-size:13px;color:#4d4d4d"><strong>+1 475 nouveaux contacts</strong> — base de 10 206 prête pour la campagne de juin.</div></div>
+      </div>
+      <div class="sb swm" >
+        <div class="st" style="color:#ffbd59"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Menaces</div>
+        <div class="si"><div class="dot" style="background:#ffbd59"></div><div style="font-size:13px;color:#4d4d4d"><strong>Fatigue emailing.</strong> Taux d'ouverture en baisse (38 % → 31 %). Motif "trop fréquent" apparu sur Campagne 2 Mail 4.</div></div>
+        <div class="si"><div class="dot" style="background:#ffbd59"></div><div style="font-size:13px;color:#4d4d4d"><strong>Apple MPP</strong> gonfle les taux d'ouverture — environ 1 000 ouvertures automatiques par email.</div></div>
+        <div class="si"><div class="dot" style="background:#ffbd59"></div><div style="font-size:13px;color:#4d4d4d"><strong>Concurrence forte.</strong> Les pharmaciens reçoivent de nombreuses sollicitations commerciales.</div></div>
+        <div class="si"><div class="dot" style="background:#ffbd59"></div><div style="font-size:13px;color:#4d4d4d"><strong>Inactifs non mis en veille</strong> dégradent les statistiques et la réputation de l'expéditeur.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ ANALYSE DÉTAILLÉE ══ -->
+<div id="det" class="sec hid">
+
+  <div class="apport">
+    <div class="appt">Mon apport analytique — au-delà des statistiques Brevo</div>
+    <div class="appi"><div class="appl">Découverte 1</div>CTR Brevo inclut désinscription + miroir. Vrai CTR Campagne 1 Mail 1 = 0,68 % (Brevo affiche 2,81 %) — écart ×4. Les performances réelles de la Campagne 1 sont bien inférieures aux chiffres affichés.</div>
+    <div class="appi"><div class="appl">Découverte 2</div>Campagne 1 Mail 3 : meilleur contenu de Campagne 1 mais vrai CTR le plus bas (0,31 %). Fatigue de séquence + offre carnet invisible en bas et absente de l'objet.</div>
+    <div class="appi"><div class="appl">Découverte 3</div>Campagne 2 Mail 2 vs Campagne 2 Mail 3 : même heure, même base, même format. Seule différence : le nom du produit dans l'objet. CTOR 33,63 % vs 11,41 %. Preuve directe que c'est l'objet qui pilote l'engagement.</div>
+    <div class="appi"><div class="appl">Découverte 4</div>19,35 % des désinscriptions Campagne 1 Mail 1 : "je ne me souviens pas avoir demandé". Chute à 7,14 % sur Campagne 2 Mail 2 — preuve de l'efficacité du nettoyage de la base.</div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Timing des ouvertures — Campagne 1 Mail 1 (4 novembre 2025)</div>
+    <div class="cs">Email envoyé à 10h13. Le pic se produit dans les 47 minutes suivant l'envoi. Les ouvertures nocturnes (22h-23h) sont des ouvertures Apple MPP automatiques — pas de vraies lectures humaines.</div>
+    <div style="position:relative;width:100%;height:210px"><canvas id="cd_timing" role="img" aria-label="Ouvertures par heure Campagne 1 Mail 1 : fort pic à 10h avec 1032 ouvertures">Timing</canvas></div>
+    <div class="nb" style="background:#fff8e8;border-left:4px solid #ffbd59"><strong >Insight timing :</strong> Le pic à 10h00 (1 032 ouvertures) se produit juste après l'envoi de 10h13. La Campagne 2 a adopté un envoi à 7h35. Le pic de 10h00 sur Campagne 1 Mail 1 (1&nbsp;032 ouvertures dans les 47 premières minutes) montre que la fenêtre matinale est décisive — après 11h00 les ouvertures chutent de 57&nbsp;%.</div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Motifs de désinscription — Campagne 1 Mail 1</div>
+    <div class="cs">109 désinscriptions · 1,36 % · 1 plainte spam. L'analyse des motifs révèle un problème structurel dans la base initiale.</div>
+    <div class="g2">
+      <div style="position:relative;width:100%;height:200px"><canvas id="cd_motifs" role="img" aria-label="74% ne souhaitent plus, 19% ne se souviennent pas, 6% contenu pas pertinent">Motifs</canvas></div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:12px">
+        <div class="ins ig" style="margin-bottom:0"><div class="it">74 % — réaction normale</div><div class="ib2">Ces contacts ont décidé que Marvel Pharma n'était pas pertinent pour eux. C'est inévitable sur un premier envoi.</div></div>
+        <div class="ins ir" style="margin-bottom:0"><div class="it">19 % — problème de consentement</div><div class="ib2">Presque 1 sur 5 ne sait pas pourquoi il reçoit cet email. Ce chiffre tombe à 7 % sur Campagne 2 Mail 2 après le nettoyage.</div></div>
+        <div class="ins ia" style="margin-bottom:0"><div class="it">6 % — contenu pas pertinent</div><div class="ib2">Signal de ciblage imparfait ou de contenu trop générique pour ces pharmaciens.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ CLICS ══ -->
+<div id="clics" class="sec hid">
+
+  <div class="card">
+    <div class="ct">CTR affiché par Brevo vs vrai CTR vers le site Marvel</div>
+    <div class="cs">C'est l'un des apports analytiques les plus importants. Brevo additionne les clics désinscription et miroir dans son CTR global. Ces clics ne représentent aucun intérêt commercial. En les soustrayant, on obtient le vrai CTR vers le site.</div>
+    <div class="g2" style="margin-bottom:16px">
+      <div style="text-align:center;padding:20px;border-radius:12px;background:#fff0e8;border:2px solid #fe9452">
+        <div style="font-size:13px;color:#fe9452;margin-bottom:6px;font-weight:600">CTR affiché par Brevo — Campagne 1 Mail 1</div>
+        <div style="font-size:36px;font-weight:700;color:#fe9452">2,81 %</div>
+        <div style="font-size:12px;color:#fe9452;margin-top:6px;line-height:1.5">Inclut 109 clics désinscription<br>+ 75 clics miroir</div>
+      </div>
+      <div style="text-align:center;padding:20px;border-radius:12px;background:rgba(56,182,255,.12);border:2px solid #38b6ff">
+        <div style="font-size:13px;color:#38b6ff;margin-bottom:6px;font-weight:600">Vrai CTR vers marvelpharma.fr</div>
+        <div style="font-size:36px;font-weight:700;color:#38b6ff">0,68 %</div>
+        <div style="font-size:12px;color:#4d4d4d;margin-top:6px;line-height:1.5">57 clics uniques réels<br>Chiffre réellement exploitable</div>
+      </div>
+    </div>
+    <div style="position:relative;width:100%;height:210px"><canvas id="ck_comp" role="img" aria-label="Comparaison CTR Brevo vs vrai CTR pour Camp.1 M1, Camp.1 M2, Camp.1 M3, Camp.2 M1">CTR comparaison</canvas></div>
+    <div class="leg" style="margin-top:12px">
+      <span><span class="sq" ></span>CTR Brevo affiché (inclut clics désinscription + miroir — non commerciaux)</span>
+      <span><span class="sq" ></span>Vrai CTR vers le site (clics uniques commerciaux uniquement)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Détail des liens cliqués — Campagne 1</div>
+    <div class="cs">Analyse email par email des vrais clics. Les clics désinscription et miroir sont identifiés et exclus du calcul du CTR commercial.</div>
+    <div class="sep-t" style="margin-bottom:12px">Campagne 1 Mail 1 · Vrai CTR = 0,68 %</div>
+    <div class="clic-r" style="background:#fff0e8"><span style="font-weight:600">Lien de désinscription</span><span class="tg" >109 clics · exclu du calcul</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >Lien miroir</span><span class="tg" >75 clics · exclu du calcul</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span style="font-weight:600">marvelpharma.fr/store/catalogue</span><span class="tg" >57 clics uniques ✓ · 98,46 %</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >marvelpharma.fr (accueil)</span><span class="tg" >1 clic unique · 1,54 %</span></div>
+    <div class="sep-t" style="margin-top:16px;margin-bottom:12px">Campagne 1 Mail 2 · Vrai CTR = 0,61 %</div>
+    <div class="clic-r" style="background:#fff0e8"><span style="font-weight:600">Lien de désinscription</span><span class="tg" >98 clics · exclu</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >Lien miroir</span><span class="tg" >9 clics · exclu</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span style="font-weight:600">marvelpharma.fr/store/catalogue</span><span class="tg" >44 clics uniques ✓ · 89,83 %</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >marvelpharma.fr (accueil)</span><span class="tg" >5 clics uniques · 10,17 %</span></div>
+    <div class="sep-t" style="margin-top:16px;margin-bottom:12px">Campagne 1 Mail 3 · Vrai CTR = 0,31 %</div>
+    <div class="clic-r" style="background:#fff0e8"><span style="font-weight:600">Lien de désinscription</span><span class="tg" >87 clics · exclu</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >Lien miroir</span><span class="tg" >30 clics · exclu</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span style="font-weight:600">marvelpharma.fr/store/catalogue</span><span class="tg" >18 clics uniques ✓ · 80,56 %</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >marvelpharma.fr (accueil)</span><span class="tg" >6 clics uniques · 19,44 %</span></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Détail des liens cliqués — Campagne 2 Mail 1 et Mail 2</div>
+    <div class="cs">Première apparition d'une page produit dédiée sur Campagne 2 Mail 1. Analyse de la répartition des clics sur Campagne 2 Mail 2 — le meilleur email.</div>
+    <div class="sep-t c2" style="margin-bottom:12px">Campagne 2 Mail 1 · Première page produit dédiée</div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >Lien miroir</span><span class="tg" >77 clics · exclu</span></div>
+    <div class="clic-r" style="background:#fff0e8"><span style="font-weight:600">Lien de désinscription</span><span class="tg" >65 clics · exclu</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span style="font-weight:600">marvelpharma.fr</span><span class="tg" >27 clics uniques ✓</span></div>
+    <div class="clic-r" style="background:#e8f5ff"><span style="font-weight:600">/product/poire-a-lavement — 1ère fiche produit !</span><span class="tg" >10 clics uniques ✓</span></div>
+    <div class="sep-t c2" style="margin-top:16px;margin-bottom:12px">Campagne 2 Mail 2 ★ · Meilleur email</div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span >Lien miroir</span><span class="tg" >78 clics · exclu</span></div>
+    <div class="clic-r" style="background:#fff0e8"><span style="font-weight:600">Lien de désinscription</span><span class="tg" >37 clics · le plus bas de la campagne</span></div>
+    <div class="clic-r" style="background:rgba(56,182,255,.12)"><span style="font-weight:600">marvelpharma.fr (accueil général)</span><span class="tg" >35 clics uniques ✓ · 65 %</span></div>
+    <div class="clic-r" style="background:#f0ebff"><span style="font-weight:600">/product/macaron-menthol</span><span class="tg" >9 clics uniques ✓ · 17 %</span></div>
+    <div class="nb" style="background:#f0ebff;border-left:4px solid #8c52ff"><strong >Analyse :</strong> Malgré 825 clics au total, seulement 17 % vont vers la fiche macaron menthol. 65 % vont vers la page d'accueil générale. Les pharmaciens explorent le site mais ne trouvent pas directement le produit de l'email. Une page dédiée avec bouton Commander immédiat transformerait ces visites en commandes mesurables.</div>
+  </div>
+
+</div>
+
+<!-- ══ RECOMMANDATIONS ══ -->
+<div id="recos" class="sec hid">
+
+  <div class="hl"><div class="hlt">5 recommandations pour la campagne de juin 2026</div><div style="font-size:13px;color:rgba(255,255,255,.75)">Chaque recommandation est justifiée par un écart de performance mesuré entre deux emails réels de la campagne.</div></div>
+
+  <div class="rc" style="background:rgba(56,182,255,.12);border:1px solid #38b6ff">
+    <div class="rn" style="background:#38b6ff;color:#fff">1</div>
+    <div style="flex:1"><div class="rt">Nommer le produit dans chaque objet d'email</div><div class="rb">Campagne 2 Mail 2 (macaron menthol) : CTOR 33,63 %. Campagne 1 Mail 2 (objet générique) : CTOR 2,42 %. Même base, même heure, même format — seule la ligne d'objet change. Résultat : engagement ×14. Pour juin, chaque email doit nommer un produit précis que les pharmaciens reconnaissent dans leur quotidien.</div><div class="ri" style="color:#38b6ff">Impact mesuré : CTOR ×14 · Coût zéro · Applicable immédiatement</div></div>
+  </div>
+
+  <div class="rc" style="background:#e8f5ff;border:1px solid #5ce1e6">
+    <div class="rn" style="background:#38b6ff;color:#fff">2</div>
+    <div style="flex:1"><div class="rt">Placer le bouton Commander en haut de l'email</div><div class="rb">En Campagne 1, le bouton était en bas de l'email — invisible sans scroller entièrement. En Campagne 2, le bouton Commander a été intégré dans le visuel produit dès le haut. Pour juin : le bouton doit être visible dans le premier écran, sans scrolling.</div><div class="ri" style="color:#38b6ff">Impact estimé : CTR +30 à +50 % · Modification du template</div></div>
+  </div>
+
+  <div class="rc" style="background:#f0ebff;border:1px solid #c89aff">
+    <div class="rn" style="background:#8c52ff;color:#fff">3</div>
+    <div style="flex:1"><div class="rt">Créer une page produit dédiée pour chaque email</div><div class="rb">Sur Campagne 2 Mail 2, 65 % des clics vont vers la page d'accueil générale, seulement 17 % vers la fiche macaron menthol. Sans page dédiée, impossible de mesurer combien de clics deviennent des commandes. Pour juin : chaque email redirige vers la fiche produit de l'objet avec bouton Commander immédiatement visible.</div><div class="ri" style="color:#8c52ff">Impact : conversions mesurables · Développement de pages requises</div></div>
+  </div>
+
+  <div class="rc" style="background:#fff8e8;border:1px solid #ffbd59">
+    <div class="rn" style="background:#ffbd59;color:#fff">4</div>
+    <div style="flex:1"><div class="rt">Systématiser preuve sociale + chiffre scientifique sourcé</div><div class="rb">Campagne 2 Mail 1 : "51,4 % des Français ont eu recours à ce type de produit (source Springer)". Campagne 2 Mail 2 : témoignage client. Aucun email de la Campagne 1 n'en contenait. CTOR moyen Campagne 1 : 4,5 % vs CTOR moyen Campagne 2 : 20 %. Dans le secteur pharmaceutique, la rigueur et la crédibilité sont fondamentales.</div><div class="ri" style="color:#ffbd59">Impact mesuré : CTOR moyen ×4 entre les deux campagnes</div></div>
+  </div>
+
+  <div class="rc" style="background:rgba(56,182,255,.12);border:1px solid #d0e4f5">
+    <div class="rn" style="background:#4d4d4d;color:#fff">5</div>
+    <div style="flex:1"><div class="rt">Segmenter la base Brevo par comportement</div><div class="rb">La base de 10 206 contacts est non segmentée. Trois groupes à créer : (1) Cliqueurs actifs — ont cliqué au moins une fois → offre commerciale directe. (2) Ouvreurs non-cliqueurs — ouvrent mais ne cliquent jamais → objet encore plus précis avec chiffre choc. (3) Inactifs — n'ont pas ouvert depuis 3 emails → mise en veille pour protéger la réputation de l'expéditeur.</div><div class="ri" style="color:#4d4d4d">Impact : amélioration de tous les KPIs · Configuration Brevo avant juin</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Tableau de suivi des recommandations</div>
+    <div class="cs">Feuille de route à suivre avant la campagne de juin 2026 — priorité, effort requis et statut de chaque action.</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Action</th><th>Priorité</th><th>Effort requis</th><th>Impact attendu</th><th>Justification</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Produit dans l'objet</strong></td><td><span class="tg" >Haute</span></td><td><span class="tg" >Faible</span></td><td style="font-weight:700">CTOR ×14</td><td style="font-size:11px;">Campagne 1 Mail 2 vs Campagne 2 Mail 2</td><td><span class="tg" >Prêt</span></td></tr>
+          <tr ><td><strong>CTA en haut</strong></td><td><span class="tg" >Haute</span></td><td><span class="tg" >Faible</span></td><td style="font-weight:700">CTR +30-50 %</td><td style="font-size:11px;">Camp. 1 vs Camp. 2</td><td><span class="tg" >Template</span></td></tr>
+          <tr><td><strong>Page produit dédiée</strong></td><td><span class="tg" >Moyenne</span></td><td><span class="tg" >Élevé</span></td><td style="font-weight:700">Conversions</td><td style="font-size:11px;">Campagne 2 Mail 2 : 65 % accueil</td><td><span class="tg" >Développement</span></td></tr>
+          <tr ><td><strong>Preuve + chiffre sourcé</strong></td><td><span class="tg" >Haute</span></td><td><span class="tg" >Moyen</span></td><td style="font-weight:700">CTOR ×4</td><td style="font-size:11px;">Camp. 1 vs Camp. 2</td><td><span class="tg" >Prêt</span></td></tr>
+          <tr><td><strong>Segmentation Brevo</strong></td><td><span class="tg" >Moyenne</span></td><td><span class="tg" >Moyen</span></td><td style="font-weight:700">KPIs ↑</td><td style="font-size:11px;">Base 10 206 contacts</td><td><span class="tg" >Config.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<p style="font-size:12px;color:#7a8fa8;text-align:center;padding-top:6px">Marvel Pharma · Dashboard analyse emailing · Stage Data Marketing © 2026 · Données Brevo exportées mai 2026</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const TEAL='#38b6ff',PINK='#8c52ff',RED='#fe9452',AMBER='#ffbd59',GRAY='#7a8fa8',GREEN='#38b6ff';
+const L7=['Campagne 1 Mail 1','Campagne 1 Mail 2','Campagne 1 Mail 3','Campagne 2 Mail 1','Campagne 2 Mail 2★','Campagne 2 Mail 3','Campagne 2 Mail 4'];
+function bg(i){return i<3?TEAL+'BB':PINK+'BB'}
+function bd(i){return i<3?TEAL:PINK}
+const bO={responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+' : '+c.parsed.y.toFixed(2)+' %'}}},
+  scales:{x:{grid:{display:false},ticks:{font:{size:11},color:GRAY,maxRotation:0}},
+    y:{beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},color:GRAY,callback:v=>v+'%'}}}};
+
+function mk(id,type,labels,datasets,opts){
+  const el=document.getElementById(id);
+  if(!el)return;
+  new Chart(el,{type,data:{labels,datasets},options:opts||bO});
+}
+
+mk('cv_ctor','bar',L7,[{label:'CTOR',data:[7.37,2.42,3.79,19.17,33.63,11.41,16.91],
+  backgroundColor:L7.map((_,i)=>i===4?PINK+'EE':bg(i)),
+  borderColor:L7.map((_,i)=>i===4?PINK:bd(i)),borderWidth:1,borderRadius:4}]);
+
+mk('cd_timing','bar',['8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+  [{label:'Ouvertures',data:[132,108,1032,443,194,111,104,84,63,57,64,55,34,42,83,111],
+    backgroundColor:(_,i)=>i===2?RED+'CC':TEAL+'66',borderRadius:3}],
+  {...bO,plugins:{...bO.plugins,tooltip:{callbacks:{label:c=>c.parsed.y+' ouvertures'}}}});
+
+mk('cd_motifs','doughnut',
+  ['Ne souhaitent plus recevoir (74 %)','Ne se souviennent pas avoir demandé (19 %)','Contenu pas pertinent (6 %)'],
+  [{data:[74.19,19.35,6.45],backgroundColor:[GRAY,RED,AMBER],borderWidth:3,borderColor:'#fff'}],
+  {responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:12},boxWidth:14,padding:12}}}});
+
+mk('ck_comp','bar',['Campagne 1 Mail 1','Campagne 1 Mail 2','Campagne 1 Mail 3','Campagne 2 Mail 1'],
+  [{label:'CTR affiché Brevo',data:[2.81,0.89,1.37,6.24],backgroundColor:RED+'AA',borderColor:RED,borderWidth:1,borderRadius:4},
+   {label:'Vrai CTR vers le site',data:[0.68,0.61,0.31,0.46],backgroundColor:GREEN+'AA',borderColor:GREEN,borderWidth:1,borderRadius:4}]);
+
+function show(id,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.add('hid'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById(id).classList.remove('hid');
+  el.classList.add('on');
+}
+</script>
+<script>
+/* ══ NAVIGATION ══ */
+function show(id, el) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.add('hid'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  const t = document.getElementById(id);
+  if (t) t.classList.remove('hid');
+  el.classList.add('on');
+  el.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+}
+
+/* ══ COULEURS MBC POUR CHARTS — aucune autre couleur ══ */
+const C1='#38b6ff', C2='#5ce1e6', C3='#ffbd59', C4='#fe9452', C5='#8c52ff', C6='#4d4d4d';
+const MUT='#6b7fa0';
+
+const L7 = ['Camp.1 Mail 1','Camp.1 Mail 2','Camp.1 Mail 3','Camp.2 Mail 1','Camp.2 Mail 2★','Camp.2 Mail 3','Camp.2 Mail 4'];
+
+const base = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { display: false },
+    tooltip: { callbacks: { label: c => c.dataset.label + ' : ' + c.parsed.y.toFixed(2) + ' %' } }
+  },
+  scales: {
+    x: { grid: { display: false }, ticks: { font: { size: 12, family: 'Open Sans' }, color: C6, maxRotation: 30 } },
+    y: { beginAtZero: true, grid: { color: 'rgba(56,182,255,.1)' }, ticks: { font: { size: 12, family: 'Open Sans' }, color: C6, callback: v => v + '%' } }
+  }
+};
+
+function charts() {
+  /* CTOR */
+  const e1 = document.getElementById('cv_ctor');
+  if (e1 && !e1.dataset.i) {
+    new Chart(e1, { type: 'bar', data: { labels: L7, datasets: [{
+      label: 'CTOR',
+      data: [7.37, 2.42, 3.79, 19.17, 33.63, 11.41, 16.91],
+      backgroundColor: L7.map((_, i) => i === 4 ? C5 + 'EE' : i < 3 ? C1 + 'CC' : C5 + '88'),
+      borderColor: L7.map((_, i) => i < 3 ? C1 : C5),
+      borderWidth: 1.5, borderRadius: 6
+    }]}, options: base }); e1.dataset.i = '1';
+  }
+  /* Timing */
+  const e2 = document.getElementById('cd_timing');
+  if (e2 && !e2.dataset.i) {
+    new Chart(e2, { type: 'bar', data: {
+      labels: ['8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+      datasets: [{ label: 'Ouvertures',
+        data: [132, 108, 1032, 443, 194, 111, 104, 84, 63, 57, 64, 55, 34, 42, 83, 111],
+        backgroundColor: (ctx) => ctx.dataIndex === 2 ? C4 + 'CC' : C1 + '66', borderRadius: 4
+      }]
+    }, options: { ...base, plugins: { ...base.plugins, tooltip: { callbacks: { label: c => c.parsed.y + ' ouvertures' } } } } });
+    e2.dataset.i = '1';
+  }
+  /* Motifs désinscription */
+  const e3 = document.getElementById('cd_motifs');
+  if (e3 && !e3.dataset.i) {
+    new Chart(e3, { type: 'doughnut', data: {
+      labels: ['Ne souhaite plus recevoir (74 %)', 'Ne se souvient pas avoir demandé (19 %)', 'Contenu pas pertinent (6 %)'],
+      datasets: [{ data: [74.19, 19.35, 6.45], backgroundColor: [MUT, C4, C3], borderWidth: 3, borderColor: '#fff' }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 13, family: 'Open Sans' }, boxWidth: 14, padding: 14 } } } } });
+    e3.dataset.i = '1';
+  }
+  /* CTR comparaison */
+  const e4 = document.getElementById('ck_comp');
+  if (e4 && !e4.dataset.i) {
+    new Chart(e4, { type: 'bar', data: {
+      labels: ['Camp.1 Mail 1', 'Camp.1 Mail 2', 'Camp.1 Mail 3', 'Camp.2 Mail 1'],
+      datasets: [
+        { label: 'CTR Brevo affiché', data: [2.81, 0.89, 1.37, 6.24], backgroundColor: C4 + 'AA', borderColor: C4, borderWidth: 1.5, borderRadius: 5 },
+        { label: 'Vrai CTR vers le site', data: [0.68, 0.61, 0.31, 0.46], backgroundColor: C1 + 'AA', borderColor: C1, borderWidth: 1.5, borderRadius: 5 }
+      ]
+    }, options: { ...base, plugins: { ...base.plugins, legend: { display: true, position: 'top', labels: { font: { size: 13, family: 'Open Sans' }, boxWidth: 14, padding: 14 } } } } });
+    e4.dataset.i = '1';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', charts);
+window.addEventListener('load', charts);
+</script>
+</body>
+</html>
